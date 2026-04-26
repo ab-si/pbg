@@ -7,49 +7,50 @@ const FOOD_OPTIONS = [
     emoji: '🥦',
     label: 'Veg',
     desc: 'Keep it green',
-    bg: 'bg-pastel-mint-l',
-    activeBg: 'from-emerald-400 to-teal-400',
-    text: 'text-emerald-800',
+    unselBg: 'bg-pastel-mint-l border-emerald-300',
+    selBg: 'bg-emerald-500 border-game-dark',
+    rot: '-1.5deg',
   },
   {
     id: 'Non-veg',
     emoji: '🍗',
     label: 'Non-veg',
     desc: 'Bring on the meat',
-    bg: 'bg-pastel-peach-l',
-    activeBg: 'from-orange-400 to-amber-400',
-    text: 'text-orange-800',
+    unselBg: 'bg-pastel-peach-l border-orange-300',
+    selBg: 'bg-game-orange border-game-dark',
+    rot: '1deg',
   },
   {
     id: 'Vegan',
     emoji: '🌱',
     label: 'Vegan',
     desc: 'Plant-powered',
-    bg: 'bg-pastel-mint-l',
-    activeBg: 'from-green-400 to-emerald-500',
-    text: 'text-green-800',
+    unselBg: 'bg-pastel-mint-l border-green-300',
+    selBg: 'bg-green-500 border-game-dark',
+    rot: '-0.5deg',
   },
   {
     id: 'Jain',
     emoji: '🫚',
     label: 'Jain',
     desc: 'No root veggies',
-    bg: 'bg-pastel-lav-l',
-    activeBg: 'from-yellow-400 to-orange-400',
-    text: 'text-yellow-800',
+    unselBg: 'bg-pastel-lav-l border-violet-300',
+    selBg: 'bg-game-yellow border-game-dark',
+    rot: '2deg',
   },
   {
     id: 'No preference',
     emoji: '🤷',
     label: 'No preference',
     desc: "I'll eat anything!",
-    bg: 'bg-gray-50',
-    activeBg: 'from-violet-400 to-fuchsia-400',
-    text: 'text-gray-700',
+    unselBg: 'bg-gray-100 border-gray-300',
+    selBg: 'bg-game-purple border-game-dark',
+    rot: '-1deg',
+    full: true,
   },
 ];
 
-export default function FoodStep({ value, onChange }) {
+export default function FoodStep({ value, onChange, step }) {
   const [snackFocused, setSnackFocused] = useState(false);
 
   return (
@@ -57,6 +58,7 @@ export default function FoodStep({ value, onChange }) {
       emoji="🍕"
       title="Food vibes?"
       subtitle="What's your food preference for game night?"
+      step={step}
     >
       <div className="grid grid-cols-2 gap-2.5 mb-5">
         {FOOD_OPTIONS.map((opt) => {
@@ -65,34 +67,45 @@ export default function FoodStep({ value, onChange }) {
             <button
               key={opt.id}
               onClick={() => onChange('foodPreference', opt.id)}
-              className={`flex items-center gap-3 p-3.5 rounded-2xl font-semibold text-left transition-all duration-200 hover:-translate-y-0.5 active:scale-95 ${
-                isSelected
-                  ? `bg-gradient-to-r ${opt.activeBg} text-white shadow-soft`
-                  : `${opt.bg} ${opt.text} hover:shadow-soft`
-              } ${opt.id === 'No preference' ? 'col-span-2' : ''}`}
+              style={{ transform: `rotate(${opt.rot})` }}
+              className={`btn-game flex items-center gap-3 p-3.5 rounded-2xl font-black text-left
+                transition-all duration-150 border-[3px] uppercase tracking-wide
+                hover:-translate-y-0.5
+                active:translate-x-0.5 active:translate-y-0.5 active:shadow-none
+                ${isSelected
+                  ? `${opt.selBg} text-white shadow-hard`
+                  : `${opt.unselBg} text-game-dark hover:border-game-dark hover:shadow-hard-sm`
+                }
+                ${opt.full ? 'col-span-2' : ''}`}
             >
-              <span className="text-2xl">{opt.emoji}</span>
+              <span className={`text-2xl transition-transform duration-150 ${isSelected ? 'scale-125 animate-jitter' : ''}`}>
+                {opt.emoji}
+              </span>
               <span>
-                <span className={`font-bold text-sm block ${isSelected ? 'text-white' : ''}`}>
-                  {opt.label}
-                </span>
-                <span className={`text-xs ${isSelected ? 'text-white/70' : 'opacity-60'}`}>
+                <span className="font-black text-sm block">{opt.label}</span>
+                <span className={`text-xs font-semibold ${isSelected ? 'text-white/75' : 'text-gray-500'}`}>
                   {opt.desc}
                 </span>
               </span>
               {isSelected && (
-                <span className="ml-auto text-white font-bold">✓</span>
+                <span className="ml-auto text-lg animate-stamp">🎯</span>
               )}
             </button>
           );
         })}
       </div>
 
-      {/* Snacks input */}
-      <div className={`rounded-2xl transition-all duration-200 ${snackFocused ? 'bg-pastel-peach-l' : 'bg-gray-50'}`}>
+      {/* Snack request */}
+      <div
+        className={`rounded-2xl border-[3px] transition-all duration-150
+          ${snackFocused
+            ? 'bg-pastel-peach-l border-game-orange shadow-hard-sm'
+            : 'bg-gray-50 border-gray-300'
+          }`}
+      >
         <div className="px-4 pt-3 pb-1">
-          <label className="text-xs font-bold text-gray-500 uppercase tracking-wide">
-            🍿 Any snack requests? (optional)
+          <label className="text-xs font-black text-gray-600 uppercase tracking-wide">
+            🍿 Snack requests? (optional)
           </label>
         </div>
         <textarea
@@ -102,7 +115,8 @@ export default function FoodStep({ value, onChange }) {
           onBlur={() => setSnackFocused(false)}
           placeholder="Nachos, chips, cookies... anything?"
           rows={2}
-          className="w-full px-4 pb-3 bg-transparent text-gray-700 text-sm placeholder:text-gray-300 resize-none focus:outline-none"
+          className="w-full px-4 pb-3 bg-transparent text-game-dark font-semibold text-sm
+            placeholder:text-gray-300 placeholder:font-normal resize-none focus:outline-none"
         />
       </div>
     </StepCard>

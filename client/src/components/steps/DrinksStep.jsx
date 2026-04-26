@@ -6,37 +6,38 @@ const DRINKS_OPTIONS = [
     id: DRINK_CHOICES.alcohol,
     emoji: '🥂',
     label: 'Alcohol please',
-    desc: "Let's toast to good games",
-    bg: 'bg-pastel-pink-l',
-    activeBg: 'from-pink-400 to-fuchsia-400',
-    text: 'text-pink-800',
+    desc: "Let's toast to good games!",
+    unselBg: 'bg-pastel-pink-l border-pink-300',
+    selBg:   'bg-game-red border-game-dark',
+    rot: '-1.5deg',
   },
   {
     id: DRINK_CHOICES.nonAlcoholic,
     emoji: '🥤',
-    label: 'Non-alcoholic drink',
-    desc: 'Juice, soda, mocktails, anything zero-proof',
-    bg: 'bg-pastel-sky-l',
-    activeBg: 'from-sky-400 to-blue-400',
-    text: 'text-blue-800',
+    label: 'Non-alcoholic',
+    desc: 'Juice, soda, mocktails — zero proof',
+    unselBg: 'bg-pastel-sky-l border-sky-300',
+    selBg:   'bg-sky-500 border-game-dark',
+    rot: '1deg',
   },
   {
     id: DRINK_CHOICES.water,
     emoji: '💧',
-    label: 'I am good with water',
+    label: "Water's fine",
     desc: 'Keep it simple and hydrated',
-    bg: 'bg-pastel-lav-l',
-    activeBg: 'from-violet-400 to-purple-400',
-    text: 'text-violet-800',
+    unselBg: 'bg-pastel-lav-l border-violet-300',
+    selBg:   'bg-game-purple border-game-dark',
+    rot: '-0.5deg',
   },
 ];
 
-export default function DrinksStep({ value, onChange }) {
+export default function DrinksStep({ value, onChange, step }) {
   return (
     <StepCard
       emoji="🍹"
       title="Drink preferences"
-      subtitle=" — Dont say no!"
+      subtitle="Don't say no!"
+      step={step}
     >
       <div className="flex flex-col gap-3">
         {DRINKS_OPTIONS.map((opt) => {
@@ -45,29 +46,29 @@ export default function DrinksStep({ value, onChange }) {
             <button
               key={opt.id}
               onClick={() => onChange('drinks', opt.id)}
-              className={`flex items-center gap-4 p-4 rounded-2xl font-semibold text-left transition-all duration-200 hover:-translate-y-0.5 active:scale-95 ${
-                isSelected
-                  ? `bg-gradient-to-r ${opt.activeBg} text-white shadow-soft-lg`
-                  : `${opt.bg} ${opt.text} hover:shadow-soft`
-              }`}
+              style={{ transform: `rotate(${opt.rot})` }}
+              className={`btn-game flex items-center gap-4 p-4 rounded-2xl font-black text-left
+                transition-all duration-150 border-[3px] uppercase tracking-wide
+                hover:-translate-y-0.5
+                active:translate-x-0.5 active:translate-y-0.5 active:shadow-none
+                ${isSelected
+                  ? `${opt.selBg} text-white shadow-hard`
+                  : `${opt.unselBg} text-game-dark hover:border-game-dark hover:shadow-hard-sm`
+                }`}
             >
-              <span className={`text-4xl transition-transform duration-200 ${isSelected ? 'scale-125' : ''}`}>
+              <span className={`text-4xl transition-transform duration-150 ${isSelected ? 'scale-125 animate-jitter' : ''}`}>
                 {opt.emoji}
               </span>
               <span className="flex-1">
-                <span className={`font-black text-lg block ${isSelected ? 'text-white' : ''}`}>
-                  {opt.label}
-                </span>
-                <span className={`text-sm ${isSelected ? 'text-white/70' : 'opacity-60'}`}>
+                <span className="font-black text-base block">{opt.label}</span>
+                <span className={`text-xs font-semibold normal-case tracking-normal ${isSelected ? 'text-white/75' : 'text-gray-500'}`}>
                   {opt.desc}
                 </span>
               </span>
               <span
-                className={`w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-bold transition-all duration-200 ${
-                  isSelected
-                    ? 'bg-white/30 border-white text-white'
-                    : 'border-gray-300'
-                }`}
+                className={`w-7 h-7 rounded-full border-[2.5px] flex items-center justify-center text-sm
+                  font-black transition-all duration-150
+                  ${isSelected ? 'bg-white/30 border-white text-white animate-stamp' : 'border-gray-300'}`}
               >
                 {isSelected ? '✓' : ''}
               </span>
@@ -76,9 +77,12 @@ export default function DrinksStep({ value, onChange }) {
         })}
       </div>
 
-      <div className="mt-4 p-3 bg-pastel-mint-l rounded-2xl">
-        <p className="text-xs text-emerald-700 font-medium text-center">
-          🌟 Almost there! One click away from joining the game night.
+      <div
+        className="mt-4 p-3 bg-game-yellow rounded-2xl border-[2.5px] border-game-dark shadow-hard-sm"
+        style={{ transform: 'rotate(-0.5deg)' }}
+      >
+        <p className="text-xs text-game-dark font-black text-center uppercase tracking-wide">
+          🌟 Final boss level! One click away from locking in your spot!
         </p>
       </div>
     </StepCard>

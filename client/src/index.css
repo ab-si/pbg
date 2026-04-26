@@ -12,6 +12,37 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Game board dot-grid background */
+.bg-game-board {
+  background-color: #f5f0ff;
+  background-image:
+    radial-gradient(circle, #c4b5fd50 1.5px, transparent 1.5px),
+    radial-gradient(circle, #f9a8d450 1.5px, transparent 1.5px);
+  background-size: 28px 28px, 28px 28px;
+  background-position: 0 0, 14px 14px;
+}
+
+/* Neo-brutalist button press: pair with shadow-hard */
+.btn-game {
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.btn-game:active {
+  transform: translate(4px, 4px) !important;
+  box-shadow: none !important;
+}
+
+/* Card tilt variants */
+.tilt-l { transform: rotate(-1.2deg); }
+.tilt-r { transform: rotate(0.8deg); }
+.tilt-ll { transform: rotate(-2deg); }
+.tilt-rr { transform: rotate(1.5deg); }
+
+/* Outline text for game show headers */
+.text-outline {
+  -webkit-text-stroke: 2px #1A1A2E;
+  paint-order: stroke fill;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -21,27 +52,47 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #C3B1E1;
+  background: #FFD600;
   border-radius: 99px;
+  border: 1px solid #1A1A2E;
 }
 
 /* Selection highlight */
 ::selection {
-  background: #DDD4F0;
-  color: #4a3b6b;
+  background: #FFD600;
+  color: #1A1A2E;
 }
 
 @layer utilities {
   .text-shadow {
     text-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   }
+  .text-shadow-hard {
+    text-shadow: 2px 2px 0px #1A1A2E;
+  }
 }
 
-/* Smooth transitions for all interactive elements */
+/* Input / textarea base */
 button, input, textarea {
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 input:focus, textarea:focus {
   outline: none;
+}
+
+/* Sticker badge style */
+.badge-sticker {
+  display: inline-block;
+  transform: rotate(-3deg);
+  background: #FFD600;
+  color: #1A1A2E;
+  font-weight: 900;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1.5px solid #1A1A2E;
+  box-shadow: 2px 2px 0 #1A1A2E;
 }

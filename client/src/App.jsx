@@ -88,57 +88,77 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-br from-pastel-lav-l via-pastel-pink-l to-pastel-sky-l font-lato"
+      className="min-h-screen bg-game-board font-lato"
       onKeyDown={handleKeyDown}
     >
       <div className="max-w-xl mx-auto px-4 py-8 pb-16">
         {/* Header */}
         <div className="text-center mb-6 animate-fade-in">
-          <p className="text-2xl font-black text-gray-700">🎲 Board Game Night</p>
+          <p
+            className="text-2xl font-black text-game-dark uppercase tracking-tight text-shadow-hard"
+            style={{ transform: 'rotate(-0.5deg)', display: 'inline-block' }}
+          >
+            🎲 Board Game Night
+          </p>
         </div>
 
         <ProgressBar currentStep={step} totalSteps={TOTAL_STEPS} />
 
-        {/* Step card — key forces remount on step change for animation */}
-        <div key={`step-${step}`} className="mt-6 animate-slide-up">
-          <CurrentStep value={formData} onChange={updateForm} />
+        {/* Step card */}
+        <div key={`step-${step}`} className="mt-6 animate-slide-in-bounce">
+          <CurrentStep value={formData} onChange={updateForm} step={step - 1} />
         </div>
 
         {error && (
-          <div className="mt-4 p-4 bg-red-50 border border-red-200 text-red-500 rounded-2xl text-center font-medium animate-fade-in">
-            {error}
+          <div
+            className="mt-4 p-4 bg-game-red text-white rounded-2xl text-center font-black animate-stamp
+              border-[3px] border-game-dark shadow-hard"
+          >
+            🚨 {error}
           </div>
         )}
 
         {/* Navigation */}
         <div className="mt-6 flex gap-3">
+          {/* Back — retreat button */}
           <button
             onClick={handleBack}
-            className="px-6 py-3.5 rounded-2xl bg-white text-gray-500 font-semibold shadow-soft hover:shadow-soft-lg hover:-translate-y-0.5 active:scale-95 transition-all duration-200"
+            className="btn-game px-6 py-3.5 rounded-2xl bg-white text-game-dark font-black
+              border-[3px] border-game-dark shadow-hard
+              hover:-translate-y-0.5 hover:shadow-hard-lg
+              active:translate-x-1 active:translate-y-1 active:shadow-none
+              transition-all duration-150 uppercase tracking-wide"
+            style={{ transform: 'rotate(-0.5deg)' }}
           >
-            ← Back
+            ⬅ Bail Out
           </button>
+
+          {/* Next / Submit */}
           <button
             onClick={handleNext}
             disabled={!canProceed() || isLoading}
-            className={`flex-1 py-3.5 rounded-2xl font-bold text-white shadow-soft transition-all duration-200 ${
-              canProceed() && !isLoading
-                ? 'bg-gradient-to-r from-violet-400 to-fuchsia-400 hover:shadow-glow hover:-translate-y-0.5 active:scale-95 cursor-pointer'
-                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-            }`}
+            style={canProceed() && !isLoading ? { transform: 'rotate(0.5deg)' } : {}}
+            className={`btn-game flex-1 py-3.5 rounded-2xl font-black text-lg uppercase tracking-wide
+              border-[3px] transition-all duration-150
+              ${canProceed() && !isLoading
+                ? step === TOTAL_STEPS
+                  ? 'bg-game-red text-white border-game-dark shadow-hard-red hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_#FF3366] active:translate-x-1 active:translate-y-1 active:shadow-none cursor-pointer'
+                  : 'bg-game-yellow text-game-dark border-game-dark shadow-hard hover:-translate-y-0.5 hover:shadow-hard-lg active:translate-x-1 active:translate-y-1 active:shadow-none cursor-pointer'
+                : 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed'
+              }`}
           >
             {isLoading
-              ? '🎲 Sending...'
+              ? '🎲 Shuffling...'
               : step === TOTAL_STEPS
-              ? "🎉 I'm In!"
-              : 'Next →'}
+              ? 'Lock Your Move 🎯'
+              : 'Roll Forward 🎲'}
           </button>
         </div>
 
         {/* Hint */}
         {canProceed() && (
-          <p className="text-center text-xs text-gray-400 mt-3 animate-fade-in">
-            Press Enter to continue
+          <p className="text-center text-xs text-gray-500 font-bold mt-3 animate-fade-in uppercase tracking-wide">
+            ⌨ Press Enter to continue
           </p>
         )}
       </div>

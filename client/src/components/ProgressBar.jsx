@@ -1,47 +1,50 @@
+const DICE_FACES = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+
 const STEP_META = [
-  { label: 'Name', emoji: '👤' },
-  { label: 'When', emoji: '📅' },
-  { label: 'Games', emoji: '🎮' },
-  { label: 'Food', emoji: '🍕' },
+  { label: 'Name',   emoji: '👤' },
+  { label: 'When',   emoji: '📅' },
+  { label: 'Games',  emoji: '🎮' },
+  { label: 'Food',   emoji: '🍕' },
   { label: 'Drinks', emoji: '🍹' },
 ];
 
 export default function ProgressBar({ currentStep, totalSteps }) {
   return (
     <div className="w-full">
-      {/* Step dots + connector line */}
+      {/* Step markers + connector */}
       <div className="flex items-center justify-between relative">
-        {/* Background line */}
-        <div className="absolute top-4 left-0 right-0 h-1 bg-gray-200 rounded-full -z-10" />
-        {/* Progress line */}
+        {/* Background track */}
+        <div className="absolute top-5 left-0 right-0 h-2 bg-gray-200 rounded-full -z-10
+          border border-game-dark" />
+        {/* Progress fill */}
         <div
-          className="absolute top-4 left-0 h-1 bg-gradient-to-r from-violet-400 to-fuchsia-400 rounded-full -z-10 transition-all duration-500"
+          className="absolute top-5 left-0 h-2 bg-game-yellow rounded-full -z-10 transition-all duration-500
+            border border-game-dark"
           style={{ width: `${((currentStep - 1) / (totalSteps - 1)) * 100}%` }}
         />
 
         {STEP_META.map((meta, i) => {
           const stepNum = i + 1;
-          const isDone = stepNum < currentStep;
+          const isDone    = stepNum < currentStep;
           const isCurrent = stepNum === currentStep;
-          const isFuture = stepNum > currentStep;
 
           return (
             <div key={stepNum} className="flex flex-col items-center gap-1.5">
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${
-                  isDone
-                    ? 'bg-gradient-to-r from-violet-400 to-fuchsia-400 text-white shadow-soft'
+                className={`w-10 h-10 rounded-full flex items-center justify-center text-lg font-black
+                  border-[2.5px] border-game-dark transition-all duration-300
+                  ${isDone
+                    ? 'bg-game-yellow text-game-dark shadow-hard-sm'
                     : isCurrent
-                    ? 'bg-white border-2 border-violet-400 text-violet-600 shadow-glow scale-110'
-                    : 'bg-white border-2 border-gray-200 text-gray-400'
-                }`}
+                    ? 'bg-game-purple text-white shadow-hard scale-110 animate-pulse-border'
+                    : 'bg-white text-gray-400'
+                  }`}
               >
-                {isDone ? '✓' : meta.emoji}
+                {isDone ? DICE_FACES[i] : meta.emoji}
               </div>
               <span
-                className={`text-xs font-semibold transition-colors duration-300 ${
-                  isCurrent ? 'text-violet-600' : isDone ? 'text-gray-500' : 'text-gray-300'
-                }`}
+                className={`text-[10px] font-black uppercase tracking-wide transition-colors duration-300
+                  ${isCurrent ? 'text-game-purple' : isDone ? 'text-game-dark' : 'text-gray-300'}`}
               >
                 {meta.label}
               </span>
@@ -50,10 +53,12 @@ export default function ProgressBar({ currentStep, totalSteps }) {
         })}
       </div>
 
-      {/* Step counter */}
-      <p className="text-center text-xs text-gray-400 mt-4 font-medium">
-        Step {currentStep} of {totalSteps}
-      </p>
+      {/* Level counter — game show style */}
+      <div className="flex justify-center mt-4">
+        <span className="badge-sticker" style={{ transform: 'rotate(-1deg)' }}>
+          Level {currentStep} of {totalSteps}
+        </span>
+      </div>
     </div>
   );
 }
