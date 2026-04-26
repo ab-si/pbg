@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #C3B1E1;
+  border-radius: 99px;
+}
+
+/* Selection highlight */
+::selection {
+  background: #DDD4F0;
+  color: #4a3b6b;
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* Smooth transitions for all interactive elements */
+button, input, textarea {
+  transition: all 0.2s ease;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+}
