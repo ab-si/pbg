@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import ResponseCard from '../components/admin/ResponseCard';
 import SkeletonCard from '../components/admin/SkeletonCard';
+import { DRINK_CHOICES, DRINKS_OPTIONS, isAlcoholPreference, normalizeDrinkPreference } from '../utils/drinks';
 
 const FOOD_OPTIONS = ['All', 'Veg', 'Non-veg', 'Vegan', 'Jain', 'No preference'];
-const DRINKS_OPTIONS = ['All', 'Yes', 'No', 'Maybe'];
+const DRINK_FILTER_OPTIONS = ['All', ...DRINKS_OPTIONS];
 
 function StatCard({ emoji, label, value, sub, bg }) {
   return (
@@ -101,7 +102,7 @@ export default function AdminDashboard() {
     });
     const topFood = Object.entries(foodCounts).sort((a, b) => b[1] - a[1])[0];
 
-    const drinkYes = responses.filter((r) => r.drinks === 'Yes').length;
+    const drinkYes = responses.filter((response) => isAlcoholPreference(response.drinks)).length;
 
     return { topGame, topFood, drinkYes };
   }, [responses]);
@@ -126,7 +127,7 @@ export default function AdminDashboard() {
   const filtered = useMemo(() => {
     return responses.filter((r) => {
       const foodOk = foodFilter === 'All' || r.foodPreference === foodFilter;
-      const drinkOk = drinksFilter === 'All' || r.drinks === drinksFilter;
+      const drinkOk = drinksFilter === 'All' || normalizeDrinkPreference(r.drinks) === drinksFilter;
       return foodOk && drinkOk;
     });
   }, [responses, foodFilter, drinksFilter]);
@@ -181,9 +182,9 @@ export default function AdminDashboard() {
             />
             <StatCard
               emoji="🥂"
-              label="Want Drinks"
+              label="Alcohol"
               value={`${stats.drinkYes} / ${responses.length}`}
-              sub="said yes"
+              sub="said alcohol please"
               bg="bg-pastel-pink-l"
             />
           </div>
@@ -268,7 +269,7 @@ export default function AdminDashboard() {
                 🍹 Filter by Drinks
               </p>
               <div className="flex flex-wrap gap-2">
-                {DRINKS_OPTIONS.map((o) => (
+                {DRINK_FILTER_OPTIONS.map((o) => (
                   <FilterChip
                     key={o}
                     label={o}

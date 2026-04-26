@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
+import { DRINKS_EMOJI, normalizeDrinkPreference } from '../utils/drinks';
 
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -16,8 +17,6 @@ const FOOD_EMOJI = {
   Jain: '🫚',
   'No preference': '🤷',
 };
-
-const DRINKS_EMOJI = { Yes: '🥂', No: '🥤', Maybe: '🤔' };
 
 export default function SubmitScreen({ data }) {
   const [visible, setVisible] = useState(false);
@@ -148,7 +147,7 @@ export default function SubmitScreen({ data }) {
               <div className="flex-1 bg-pastel-pink-l rounded-2xl px-3 py-2.5 text-center">
                 <p className="text-xs font-bold text-gray-400 mb-1">🍹 Drinks</p>
                 <p className="text-sm font-bold text-pink-700">
-                  {DRINKS_EMOJI[data.drinks] || ''} {data.drinks}
+                  {DRINKS_EMOJI[normalizeDrinkPreference(data.drinks)] || ''} {normalizeDrinkPreference(data.drinks)}
                 </p>
               </div>
             )}

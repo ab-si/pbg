@@ -1,3 +1,5 @@
+import { DRINKS_COLOR, DRINKS_EMOJI, normalizeDrinkPreference } from '../../utils/drinks';
+
 const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
@@ -20,12 +22,6 @@ const GAME_EMOJI = {
 };
 
 const FOOD_EMOJI  = { Veg: '🥦', 'Non-veg': '🍗', Vegan: '🌱', Jain: '🫚', 'No preference': '🤷' };
-const DRINKS_EMOJI = { Yes: '🥂', No: '🥤', Maybe: '🤔' };
-const DRINKS_COLOR = {
-  Yes:   'bg-pastel-pink-l text-pink-700',
-  No:    'bg-pastel-sky-l text-blue-700',
-  Maybe: 'bg-pastel-lav-l text-violet-700',
-};
 
 function timeAgo(dateStr) {
   const diff = Date.now() - new Date(dateStr).getTime();
@@ -47,6 +43,7 @@ function formatDate(dateStr) {
 
 export default function ResponseCard({ response }) {
   const { name, availability, gamePreferences, foodPreference, snacks, drinks, createdAt } = response;
+  const drinkPreference = normalizeDrinkPreference(drinks);
 
   return (
     <div className="bg-white rounded-3xl shadow-soft hover:shadow-soft-lg transition-shadow duration-300 p-5 flex flex-col gap-4">
@@ -117,10 +114,10 @@ export default function ResponseCard({ response }) {
             <span className="text-xs font-bold text-emerald-700">{foodPreference}</span>
           </div>
         )}
-        {drinks && (
-          <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-2xl ${DRINKS_COLOR[drinks] || 'bg-gray-50 text-gray-700'}`}>
-            <span className="text-base">{DRINKS_EMOJI[drinks] || '🍹'}</span>
-            <span className="text-xs font-bold">{drinks === 'Yes' ? 'Drinks: Yes' : drinks === 'No' ? 'No drinks' : 'Drinks: Maybe'}</span>
+        {drinkPreference && (
+          <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-2xl ${DRINKS_COLOR[drinkPreference] || 'bg-gray-50 text-gray-700'}`}>
+            <span className="text-base">{DRINKS_EMOJI[drinkPreference] || '🍹'}</span>
+            <span className="text-xs font-bold">{drinkPreference}</span>
           </div>
         )}
       </div>

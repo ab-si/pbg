@@ -1,29 +1,30 @@
 import StepCard from '../StepCard';
+import { DRINK_CHOICES } from '../../utils/drinks';
 
 const DRINKS_OPTIONS = [
   {
-    id: 'Yes',
+    id: DRINK_CHOICES.alcohol,
     emoji: '🥂',
-    label: 'Yes!',
+    label: 'Alcohol please',
     desc: "Let's toast to good games",
     bg: 'bg-pastel-pink-l',
     activeBg: 'from-pink-400 to-fuchsia-400',
     text: 'text-pink-800',
   },
   {
-    id: 'No',
+    id: DRINK_CHOICES.nonAlcoholic,
     emoji: '🥤',
-    label: 'No thanks',
-    desc: 'Staying hydrated with H2O',
+    label: 'Non-alcoholic drink',
+    desc: 'Juice, soda, mocktails, anything zero-proof',
     bg: 'bg-pastel-sky-l',
     activeBg: 'from-sky-400 to-blue-400',
     text: 'text-blue-800',
   },
   {
-    id: 'Maybe',
-    emoji: '🤔',
-    label: 'Maybe...',
-    desc: 'Depends on the game!',
+    id: DRINK_CHOICES.water,
+    emoji: '💧',
+    label: 'I am good with water',
+    desc: 'Keep it simple and hydrated',
     bg: 'bg-pastel-lav-l',
     activeBg: 'from-violet-400 to-purple-400',
     text: 'text-violet-800',
