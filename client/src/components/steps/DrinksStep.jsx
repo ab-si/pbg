@@ -34,8 +34,8 @@ export default function DrinksStep({ value, onChange }) {
   return (
     <StepCard
       emoji="🍹"
-      title="Bringing drinks?"
-      subtitle=" — bring your own drink!"
+      title="Drink preferences"
+      subtitle=" — Dont say no!"
     >
       <div className="flex flex-col gap-3">
         {DRINKS_OPTIONS.map((opt) => {
