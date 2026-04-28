@@ -41,7 +41,7 @@ function formatDate(dateStr) {
   return `${DAY_NAMES[d.getDay()]} ${d.getDate()} ${MONTH_NAMES[d.getMonth()]}`;
 }
 
-export default function ResponseCard({ response }) {
+export default function ResponseCard({ response, onDelete }) {
   const { name, availability, gamePreferences, foodPreference, snacks, drinks, createdAt } = response;
   const drinkPreference = normalizeDrinkPreference(drinks);
 
@@ -58,9 +58,24 @@ export default function ResponseCard({ response }) {
             <p className="text-xs text-gray-400 font-medium">Player</p>
           </div>
         </div>
-        <span className="text-xs text-gray-400 font-medium bg-gray-50 px-2.5 py-1 rounded-full">
-          {timeAgo(createdAt)}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-gray-400 font-medium bg-gray-50 px-2.5 py-1 rounded-full">
+            {timeAgo(createdAt)}
+          </span>
+          {onDelete && (
+            <button
+              onClick={() => {
+                if (window.confirm(`Delete response from ${name}?`)) {
+                  onDelete(response._id);
+                }
+              }}
+              title="Delete response"
+              className="w-7 h-7 flex items-center justify-center rounded-full text-gray-300 hover:bg-red-50 hover:text-red-400 transition-colors duration-150 active:scale-95"
+            >
+              🗑️
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Availability */}
