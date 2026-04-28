@@ -83,6 +83,25 @@ export default function AdminDashboard() {
     navigate('/admin', { replace: true });
   };
 
+  const handleDelete = useCallback(
+    async (id) => {
+      try {
+        await axios.delete(`/api/responses/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setResponses((prev) => prev.filter((r) => r._id !== id));
+      } catch (err) {
+        if (err.response?.status === 401) {
+          localStorage.removeItem('admin_token');
+          navigate('/admin', { replace: true });
+        } else {
+          setError('Failed to delete response. Try again.');
+        }
+      }
+    },
+    [token, navigate]
+  );
+
   // Stats
   const stats = useMemo(() => {
     if (!responses.length) return null;
@@ -359,7 +378,7 @@ export default function AdminDashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {filtered.map((r) => (
               <div key={r._id} className="animate-slide-up">
-                <ResponseCard response={r} />
+                <ResponseCard response={r} onDelete={handleDelete} />
               </div>
             ))}
           </div>

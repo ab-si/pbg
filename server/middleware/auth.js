@@ -7,7 +7,10 @@ module.exports = function auth(req, res, next) {
   }
   const token = header.slice(7);
   try {
-    jwt.verify(token, process.env.JWT_SECRET);
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    if (!payload.admin) {
+      return res.status(401).json({ error: 'Unauthorized — admin access required' });
+    }
     next();
   } catch {
     return res.status(401).json({ error: 'Invalid or expired token' });
